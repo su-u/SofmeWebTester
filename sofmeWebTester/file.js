@@ -61,3 +61,4 @@ const listFiles = dirPath => {
 
     return ret;
 };
+module.exports.listFiles = listFiles;
