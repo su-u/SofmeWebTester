@@ -29,7 +29,7 @@ targetList.forEach((value, index, array) =>{
             console.log('終了');
         });
     promise.then((value) =>{
-        array = array.concat(value);
+        array.push(...value);
         console.log(value);
         console.log(array);
     });
