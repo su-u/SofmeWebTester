@@ -8,7 +8,7 @@ const MAX_COUNT = 200;
 let targetList = [];
 targetList.push(TARGET);
 
-async function f() {
+const getUrl =  async () => {
     for (let i = 0; i < targetList.length; i++) {
         if(i > MAX_COUNT)break;
 
@@ -39,7 +39,7 @@ async function f() {
         console.log(targetList);
         console.log(targetList.length)
     }
-}
+};
 
-f();
 
+getUrl();
