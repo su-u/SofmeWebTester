@@ -1,7 +1,5 @@
 const client = require('cheerio-httpcli');
 
-var word = 'SLP KBIT';
-
 client.fetch('http://softmedia.sakura.ne.jp/index.html')
     .then((result) => {
         result.$('a').each(function (idx) {
