@@ -18,8 +18,8 @@ const getUrl =  async () => {
                 let _list = [];
                 result.$('a').each(function (idx) {
                     let href = result.$(this).attr('href');
-                    if (!href) return; //href属性を取得できない時の処理
-                    // 絶対パスを相対パスに変更
+                    if (!href) return;
+
                     href = URL.resolve(targetList[i], href);
                     href = href.replace(/\#.+$/, "");
                     if(!new RegExp('.+\.html').test(href)) return;
