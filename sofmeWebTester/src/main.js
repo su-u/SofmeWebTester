@@ -38,7 +38,7 @@ const main = () => {
     checkDir(insideDirname);
     checkDir(outsideDirname);
 
-    getUrlList('http://softmedia.sakura.ne.jp/', 1)
+    getUrlList('http://softmedia.sakura.ne.jp/', 200)
         .then(result => {
             console.log(result.insideUrl);
             console.log(result.outsideUrl);
@@ -49,7 +49,7 @@ const main = () => {
             screenShot(uniqInsideUrlList, insideDirname).then(r => {
                 console.log('----Finish inside url list.----');
             });
-            screenShot(uniqOutsideUrlList, insideDirname).then(r => {
+            screenShot(uniqOutsideUrlList, outsideDirname).then(r => {
                 console.log('----Finish outside url list.----');
             });
         });
