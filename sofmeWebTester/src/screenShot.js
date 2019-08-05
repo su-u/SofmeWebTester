@@ -13,7 +13,11 @@ const urlToFileName = (_string) =>{
 
 
 const screenShot = async (urlList, dir) => {
-    const browser = await puppeteer.launch({headless: true});
+    const browser = await puppeteer.launch({
+        args: ['--disable-dev-shm-usage',
+            '--unlimited-storage'
+        ]
+    });
 
     const savePage = async (element, dir) => {
         try {
@@ -23,8 +27,9 @@ const screenShot = async (urlList, dir) => {
             const fileName = path.join(dir, urlToFileName(element));
             console.log("save screenshot: " + element);
             await page.screenshot({path: `${fileName}.png`, fullPage: true});
+            await page.close();
         }catch (e) {
-            console.log(e.stackTrace);
+            console.error(e.stackTrace);
         }
     };
 
@@ -34,7 +39,7 @@ const screenShot = async (urlList, dir) => {
     });
 
     await Promise.all(exList).then(() =>{
-        browser.close()
+        browser.close();
     });
 
 };
