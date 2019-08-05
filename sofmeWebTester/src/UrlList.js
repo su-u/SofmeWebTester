@@ -26,7 +26,7 @@ const getUrlList = async (target, MAX_Count = 200) => {
                     href = URL.resolve(targetList[i], href);
                     href = href.replace(/\#.+$/, "");
                     if (!new RegExp('.+\.html').test(href)) return;
-                    if (!new RegExp(TARGET).test(href)) {
+                    if (!new RegExp(target).test(href)) {
                         outsideUrlList.push(href);
                         return;
                     }
@@ -45,4 +45,4 @@ const getUrlList = async (target, MAX_Count = 200) => {
     return {insideUrl:insideUtlList, outsideUrl:outsideUrlList};
 };
 
-module.exports = getUrlList;
+module.exports.getUrlList = getUrlList;
