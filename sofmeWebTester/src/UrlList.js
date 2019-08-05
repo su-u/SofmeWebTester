@@ -42,7 +42,7 @@ const getUrlList = async (target, MAX_Count = 200) => {
                 targetList.push(...urlList);
                 targetList = Enumerable.from(targetList).distinct().toArray();
             }catch (e) {
-                console.log(e.stackTrace);
+                console.error(e.stackTrace);
             }
 
 
