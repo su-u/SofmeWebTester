@@ -33,10 +33,10 @@ const main = () => {
             console.log(result.insideUrl);
             console.log(result.outsideUrl);
 
-            const urlList = Enumerable.from(result.insideUrl).distinct().toArray();
+            const uniqUrlList = Enumerable.from(result.insideUrl).distinct().toArray();
 
-            urlList.forEach((value, index, array) => {
-                screenShot(value, dirname);
+            screenShot(uniqUrlList, dirname).then(r => {
+                console.log(uniqUrlList.length);
             });
         });
 };

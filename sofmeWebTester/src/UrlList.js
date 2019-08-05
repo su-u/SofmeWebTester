@@ -21,7 +21,8 @@ const getUrlList = async (target, MAX_Count = 200) => {
                     if (!href) return;
 
                     href = URL.resolve(targetList[i], href);
-                    href = href.replace(/\#.+$/, "");
+                    href = href.replace(new RegExp('#.+$'), "");
+                    href = href.replace('#', "");
                     if (!new RegExp('.+\.html').test(href)) return;
                     if (!new RegExp(target).test(href)) {
                         outsideUrlList.push(href);

@@ -12,17 +12,30 @@ const urlToFileName = (_string) =>{
 };
 
 
-const screenShot = async (url, dir) => {
+const screenShot = async (urlList, dir) => {
     const browser = await puppeteer.launch({headless: true});
-    const page = await browser.newPage();
-    await page.setViewport({width: 1200, height: 800});
-    await page.goto(url);
-    await page.waitForNavigation({waitUntil:'networkidle2', timeout:5000})
-        .catch(e => console.log('timeout exceed. proceed to next operation'));
-    const fileName =path.join(dir, urlToFileName(url));
-    await page.screenshot({path: `${fileName}.png`, fullPage:true});
-    console.log("save screenshot: " + url);
-    await browser.close()
+
+    const savePage = async (element, dir) => {
+        try {
+            const page = await browser.newPage();
+            await page.setViewport({width: 1200, height: 800});
+            await page.goto(element);
+            const fileName = path.join(dir, urlToFileName(element));
+            await page.screenshot({path: `${fileName}.png`, fullPage: true});
+        }catch (e) {
+            console.log(e.stackTrace);
+        }
+    };
+
+    const exList = [];
+    urlList.forEach((value) =>{
+        exList.push(savePage(value, dir));
+    });
+
+    await Promise.all(exList).then(() =>{
+        browser.close()
+    });
+
 };
 
 module.exports.screenShot = screenShot;
