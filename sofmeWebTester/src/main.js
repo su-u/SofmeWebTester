@@ -8,6 +8,7 @@ const Enumerable = require('linq');
 const { promisify } = require('util');
 const { Builder, By, until } = webdriver;
 const capabilities = webdriver.Capabilities.chrome();
+
 capabilities.set('chromeOptions', {
     args: [
         '--headless',
@@ -17,26 +18,39 @@ capabilities.set('chromeOptions', {
     ]
 });
 
-const main = () => {
-    const dirname = 'img';
-    fs.access(dirname, fs.constants.R_OK | fs.constants.W_OK, (error) => {
+const checkDir = (dir) =>{
+    fs.access(dir, fs.constants.R_OK | fs.constants.W_OK, (error) => {
         if (error) {
             if (error.code === "ENOENT") {
-                fs.mkdirSync(dirname);
+                fs.mkdirSync(dir);
             } else {
                 return;
             }
         }
     });
+};
+
+
+const main = () => {
+    const insideDirname = 'img';
+    const outsideDirname = 'out';
+
+    checkDir(insideDirname);
+    checkDir(outsideDirname);
+
     getUrlList('http://softmedia.sakura.ne.jp/', 1)
         .then(result => {
             console.log(result.insideUrl);
             console.log(result.outsideUrl);
 
-            const uniqUrlList = Enumerable.from(result.insideUrl).distinct().toArray();
+            const uniqInsideUrlList = Enumerable.from(result.insideUrl).distinct().toArray();
+            const uniqOutsideUrlList = Enumerable.from(result.outsideUrl).distinct().toArray();
 
-            screenShot(uniqUrlList, dirname).then(r => {
-                console.log(uniqUrlList.length);
+            screenShot(uniqInsideUrlList, insideDirname).then(r => {
+                console.log('----Finish inside url list.----');
+            });
+            screenShot(uniqOutsideUrlList, insideDirname).then(r => {
+                console.log('----Finish outside url list.----');
             });
         });
 };

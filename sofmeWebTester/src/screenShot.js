@@ -21,6 +21,7 @@ const screenShot = async (urlList, dir) => {
             await page.setViewport({width: 1200, height: 800});
             await page.goto(element);
             const fileName = path.join(dir, urlToFileName(element));
+            console.log("save screenshot: " + element);
             await page.screenshot({path: `${fileName}.png`, fullPage: true});
         }catch (e) {
             console.log(e.stackTrace);
