@@ -6,6 +6,7 @@ const TARGET = 'http://softmedia.sakura.ne.jp/';
 
 
 const getUrlList = async (target, MAX_Count = 200) => {
+    let outsideUrlList = [];
     let targetList = [];
     targetList.push(TARGET);
     const getUrl = async () => {
@@ -24,7 +25,10 @@ const getUrlList = async (target, MAX_Count = 200) => {
                     href = URL.resolve(targetList[i], href);
                     href = href.replace(/\#.+$/, "");
                     if (!new RegExp('.+\.html').test(href)) return;
-                    if (!new RegExp(TARGET).test(href)) return;
+                    if (!new RegExp(TARGET).test(href)) {
+                        outsideUrlList.push(href);
+                        return;
+                    }
                     _list.push(href);
                 });
                 return _list;
@@ -35,11 +39,12 @@ const getUrlList = async (target, MAX_Count = 200) => {
         }
     };
     await getUrl();
-    return targetList;
+    return {insideUrl:targetList, outsideUrl:outsideUrlList};
 };
-getUrlList('http://softmedia.sakura.ne.jp/', 5)
+getUrlList('http://softmedia.sakura.ne.jp/', 200)
     .then(value => {
-        console.log(value);
+        console.log(value.insideUrl);
+        console.log(value.outsideUrl)
 });
 
 
