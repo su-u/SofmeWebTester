@@ -1,4 +1,12 @@
 const puppeteer = require('puppeteer');
+const urlToFileName = (_string) =>{
+    const string = _string;
+
+    const s1 = string.replace(new RegExp('(http://)|(https://)'), '');
+    const s = s1.split('/');
+    const result = s.join('-');
+    return result;
+};
 
 const screenShot = async (url) => {
     const browser = await puppeteer.launch({headless: true});
@@ -7,8 +15,8 @@ const screenShot = async (url) => {
     await page.goto(url);
     await page.waitForNavigation({waitUntil:'networkidle2', timeout:5000})
         .catch(e => console.log('timeout exceed. proceed to next operation'));
-    const fileName = new RegExp('.+(?!=//)');
-    await page.screenshot({path: `${url}.png`, fullPage:true});
+    const fileName = urlToFileName(url);
+    await page.screenshot({path: `${fileName}.png`, fullPage:true});
     console.log("save screenshot: " + url);
     await browser.close()
 };
