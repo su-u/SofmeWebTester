@@ -1,14 +1,14 @@
-const client = require('cheerio-httpcli');
+const getUrlList = require('./UrlList').getUrlList;
+const writer = require('./writeFile').writer;
 
-client.fetch('http://softmedia.sakura.ne.jp/index.html')
-    .then((result) => {
-        result.$('a').each(function (idx) {
-            console.log(result.$(this).attr('href'));
+const main = () => {
+    getUrlList('http://softmedia.sakura.ne.jp/', 200)
+        .then(value => {
+            console.log(value.insideUrl);
+            console.log(value.outsideUrl)
         });
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-    .finally(() => {
-        console.log('終了');
-    });
+
+
+};
+
+main();
