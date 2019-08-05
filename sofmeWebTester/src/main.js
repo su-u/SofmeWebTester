@@ -18,16 +18,28 @@ capabilities.set('chromeOptions', {
 });
 
 const main = () => {
-    getUrlList('http://softmedia.sakura.ne.jp/', 5)
+    const dirname = 'img';
+    fs.access(dirname, fs.constants.R_OK | fs.constants.W_OK, (error) => {
+        if (error) {
+            if (error.code === "ENOENT") {
+                fs.mkdirSync(dirname);
+            } else {
+                return;
+            }
+        }
+    });
+    getUrlList('http://softmedia.sakura.ne.jp/', 1)
         .then(result => {
             console.log(result.insideUrl);
             console.log(result.outsideUrl);
 
             const urlList = Enumerable.from(result.insideUrl).distinct().toArray();
+
             urlList.forEach((value, index, array) => {
-                screenShot(value);
+                screenShot(value, dirname);
             });
         });
 };
+
 
 main();
