@@ -14,9 +14,6 @@ const getUrlList = async (target, MAX_Count = 200) => {
         for (let i = 0; i < targetList.length; i++) {
             if (i > MAX_Count) break;
 
-            console.log(`${i} :fetch:${targetList[i]}`);
-            const fetchData = await client.fetch(targetList[i]);
-
             const UrlExtraction = (data) => {
                 let _list = [];
                 data.$('a').each(function (idx) {
@@ -35,10 +32,19 @@ const getUrlList = async (target, MAX_Count = 200) => {
                 return _list;
             };
 
-            const urlList = UrlExtraction(fetchData);
-            insideUtlList.push(...urlList);
-            targetList.push(...urlList);
-            targetList = Enumerable.from(targetList).distinct().toArray();
+            console.log(`${i} :fetch:${targetList[i]}`);
+
+            try {
+                const fetchData = await client.fetch(targetList[i]);
+                const urlList = UrlExtraction(fetchData);
+                insideUtlList.push(...urlList);
+                targetList.push(...urlList);
+                targetList = Enumerable.from(targetList).distinct().toArray();
+            }catch (e) {
+                console.log(e.stackTrace);
+            }
+
+
         }
     };
     await getUrl();
