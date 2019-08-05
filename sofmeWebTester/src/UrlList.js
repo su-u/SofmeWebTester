@@ -2,13 +2,14 @@ const client = require('cheerio-httpcli');
 const URL     = require('url');
 const Enumerable = require('linq');
 
-const TARGET = 'http://softmedia.sakura.ne.jp/';
-
-
 const getUrlList = async (target, MAX_Count = 200) => {
     let outsideUrlList = [];
+    let insideUtlList = [];
     let targetList = [];
-    targetList.push(TARGET);
+
+    targetList.push(target);
+    insideUtlList.push(target);
+
     const getUrl = async () => {
         for (let i = 0; i < targetList.length; i++) {
             if (i > MAX_Count) break;
@@ -33,18 +34,15 @@ const getUrlList = async (target, MAX_Count = 200) => {
                 });
                 return _list;
             };
+
             const urlList = UrlExtraction(fetchData);
+            insideUtlList.push(...urlList);
             targetList.push(...urlList);
             targetList = Enumerable.from(targetList).distinct().toArray();
         }
     };
     await getUrl();
-    return {insideUrl:targetList, outsideUrl:outsideUrlList};
+    return {insideUrl:insideUtlList, outsideUrl:outsideUrlList};
 };
-getUrlList('http://softmedia.sakura.ne.jp/', 200)
-    .then(value => {
-        console.log(value.insideUrl);
-        console.log(value.outsideUrl)
-});
 
-
+module.exports = getUrlList;
